@@ -31,6 +31,9 @@ func (c *RuntimeConfig) BindFlags(fs *flag.FlagSet) {
 }
 
 func (c RuntimeConfig) Validate() error {
+	if c.ModelPath == "" {
+		return errors.New("model path must be set")
+	}
 	if c.ContextSize <= 0 {
 		return errors.New("n-ctx must be positive")
 	}

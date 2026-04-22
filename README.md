@@ -125,7 +125,7 @@ Phase 1 is implemented:
 
 - `go.mod` exists
 - `cmd/chat` and `cmd/server` compile as placeholders
-- `pkg/chat` owns the runtime flag surface and local JSON config loading
+- `internal/appconfig` owns config discovery for local and per-user config files
 - `internal/llama` can probe a native `libllama` bridge via `cgo`
 
 Current verification command:
@@ -144,4 +144,14 @@ go test -tags llama ./internal/llama
 
 ## Local Config
 
-Do not commit actual model paths. Copy [config/local.example.json](config/local.example.json) to `config/local.json` and keep the real model path there.
+Do not commit actual model paths.
+
+The app searches config files in this order:
+
+1. `--config /path/to/config.json`
+2. `./config/local.json`
+3. `~/.go-llama-cpp-lab/config.json`
+
+If none of those files exists, startup fails fast.
+
+Commit the example file [config/local.example.json](config/local.example.json), create your local `config/local.json`, or keep your personal default in `~/.go-llama-cpp-lab/config.json`.

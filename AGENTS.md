@@ -20,12 +20,12 @@ Phase 1 uses a local JSON config file for machine-specific model paths, so do no
 
 - `go build ./...` to compile all packages
 - `go test ./...` to run the full test suite
-- `go run ./cmd/chat --config ./config/local.json` to start the CLI
-- `go run ./cmd/server --config ./config/local.json` to start the local server
+- `go run ./cmd/chat` to start the CLI once local or user config exists
+- `go run ./cmd/server` to start the local server once local or user config exists
 
 If you introduce a new command, document it in both `README.md` and this file.
 
-Do not commit real model paths or model files. Keep them in untracked local config files such as `config/local.json`.
+Do not commit real model paths or model files. Keep them in untracked local config files such as `config/local.json`, or in the per-user default file `~/.go-llama-cpp-lab/config.json`.
 
 Local `libllama` header/library conventions and native bridge verification commands are documented in `docs/01-local-build.md`.
 

@@ -10,7 +10,7 @@ Phase 1 adds the first native bridge smoke path. This document now covers two
 separate local concerns:
 
 - compile-time header and library discovery for `cgo`
-- runtime model selection through an untracked local config file
+- runtime model selection through untracked local or per-user config files
 
 ## Local Path Convention
 
@@ -60,6 +60,12 @@ Create your own untracked local file:
 config/local.json
 ```
 
+Or keep a per-user default here:
+
+```text
+~/.go-llama-cpp-lab/config.json
+```
+
 Example:
 
 ```json
@@ -71,8 +77,14 @@ Example:
 }
 ```
 
-The CLI and server now read `config/local.json` by default. Flags can still
-override values after the file is loaded.
+Startup search order is:
+
+1. explicit `--config /path/to/config.json`
+2. `./config/local.json`
+3. `~/.go-llama-cpp-lab/config.json`
+
+If none of the above exists, the program exits with an error. Flags still
+override values after the chosen file is loaded.
 
 ## Current Repo Build
 
@@ -86,8 +98,8 @@ The placeholder binaries expose the future runtime flags but do not start
 inference yet:
 
 ```bash
-go run ./cmd/chat --config ./config/local.json --help
-go run ./cmd/server --config ./config/local.json --help
+go run ./cmd/chat
+go run ./cmd/server
 ```
 
 ## Phase 1 Native Bridge Verification
