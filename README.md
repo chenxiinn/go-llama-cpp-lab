@@ -90,11 +90,13 @@ The current design assumes:
 - a local `GGUF` model available on disk
 - macOS or another environment where `cgo` can link against the local `llama.cpp` build output
 
-The exact build instructions will be added as the native bridge and runtime are implemented.
+Current local build instructions live in [docs/01-local-build.md](docs/01-local-build.md).
 
-Phase 0 landed the Go module scaffold and placeholder binaries. Phase 1 adds
-the first native bridge verification path under the `llama` build tag. Local
-build and path-discovery conventions live in [docs/01-local-build.md](docs/01-local-build.md).
+Phase 0 landed the Go module scaffold and placeholder binaries. Phase 1 added
+the first native bridge verification path under the `llama` build tag. Phase 2
+now adds real model/context/sampler wrappers and a one-shot inference smoke
+path. Local build and path-discovery conventions live in
+[docs/01-local-build.md](docs/01-local-build.md).
 
 ## Why This Repo Exists
 
@@ -121,12 +123,14 @@ Two conventions are already in place:
 
 ## Current Status
 
-Phase 1 is implemented:
+Phase 2 is implemented:
 
 - `go.mod` exists
 - `cmd/chat` and `cmd/server` compile as placeholders
 - `internal/appconfig` owns config discovery for local and per-user config files
 - `internal/llama` can probe a native `libllama` bridge via `cgo`
+- `internal/llama` can load a local `GGUF`, create context and sampler objects,
+  tokenize a prompt, decode once, and sample one token
 
 Current verification command:
 
@@ -140,6 +144,15 @@ Native bridge verification command:
 CGO_CFLAGS="-I$LLAMA_INCLUDE_DIR" \
 CGO_LDFLAGS="-L$LLAMA_LIB_DIR -Wl,-rpath,$LLAMA_LIB_DIR -lllama" \
 go test -tags llama ./internal/llama
+```
+
+Phase 2 runtime smoke command:
+
+```bash
+GO_LLAMA_CPP_LAB_TEST_MODEL="/absolute/path/to/model.gguf" \
+CGO_CFLAGS="-I$LLAMA_INCLUDE_DIR" \
+CGO_LDFLAGS="-L$LLAMA_LIB_DIR -Wl,-rpath,$LLAMA_LIB_DIR -lllama" \
+go test -tags llama ./internal/llama -run TestPhase2RuntimeSmoke -v
 ```
 
 ## Local Config
