@@ -91,6 +91,9 @@ The current design assumes:
 
 The exact build instructions will be added as the native bridge and runtime are implemented.
 
+Phase 0 has landed the Go module scaffold and placeholder binaries. The local
+build and path-discovery convention now lives in [docs/01-local-build.md](docs/01-local-build.md).
+
 ## Why This Repo Exists
 
 There are many ways to use `llama.cpp` from Go, including shelling out to a server or CLI wrapper.
@@ -113,3 +116,18 @@ Two conventions are already in place:
 
 - planning docs live under `docs/`
 - local machine noise and build outputs should stay untracked via `.gitignore`
+
+## Current Status
+
+Phase 0 is implemented:
+
+- `go.mod` exists
+- `cmd/chat` and `cmd/server` compile as placeholders
+- `pkg/chat` owns the initial runtime flag surface
+- `internal/llama` reserves the native boundary and local path convention
+
+Current verification command:
+
+```bash
+go build ./...
+```

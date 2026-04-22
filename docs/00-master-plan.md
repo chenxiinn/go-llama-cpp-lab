@@ -55,6 +55,20 @@ Out of scope for this plan:
 - concurrent generation
 - distributed serving
 
+## Phase Status
+
+| Phase | Status | Notes |
+| --- | --- | --- |
+| 0 | Completed on 2026-04-22 | Go module scaffold, placeholder binaries, and local build notes landed |
+| 1 | Pending | Native bridge not started |
+| 2 | Pending | Waiting on Phase 1 |
+| 3 | Pending | Waiting on Phase 2 |
+| 4 | Pending | Waiting on Phase 3 |
+| 5 | Pending | Waiting on Phase 4 |
+| 6 | Pending | Waiting on Phase 4 |
+| 7 | Pending | Waiting on Phases 5 and 6 |
+| 8 | Pending | Waiting on earlier phases |
+
 ## Phase Summary
 
 | Phase | Name | Main Outcome |

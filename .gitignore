@@ -9,6 +9,9 @@
 bin/
 dist/
 build/
+.gocache/
+.gomodcache/
+.gopath/
 *.test
 *.out
 coverage.out
