@@ -9,10 +9,10 @@ import (
 // entrypoints. Native handles and chat session state will plug into this in
 // later phases.
 type RuntimeConfig struct {
-	ModelPath   string
-	ContextSize int
-	GPULayers   int
-	MaxTokens   int
+	ModelPath   string `json:"model_path"`
+	ContextSize int    `json:"n_ctx"`
+	GPULayers   int    `json:"gpu_layers"`
+	MaxTokens   int    `json:"max_tokens"`
 }
 
 func DefaultRuntimeConfig() RuntimeConfig {

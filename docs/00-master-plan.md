@@ -60,7 +60,7 @@ Out of scope for this plan:
 | Phase | Status | Notes |
 | --- | --- | --- |
 | 0 | Completed on 2026-04-22 | Go module scaffold, placeholder binaries, and local build notes landed |
-| 1 | Pending | Native bridge not started |
+| 1 | Completed on 2026-04-22 | Minimal `cgo` bridge, smoke test, and local config-file model path workflow landed |
 | 2 | Pending | Waiting on Phase 1 |
 | 3 | Pending | Waiting on Phase 2 |
 | 4 | Pending | Waiting on Phase 3 |

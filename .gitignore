@@ -9,6 +9,7 @@
 bin/
 dist/
 build/
+.llama-build/
 .gocache/
 .gomodcache/
 .gopath/
@@ -24,6 +25,8 @@ logs-local/
 # Local env
 .env
 .env.*
+config/local.json
+config/*.local.json
 
 # Temp
 tmp/

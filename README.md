@@ -26,6 +26,7 @@ Current docs:
 
 - [Master Plan](docs/00-master-plan.md)
 - [Design Spec](docs/superpowers/specs/2026-04-22-go-llama-cpp-mvp-design.md)
+- [Local Build Notes](docs/01-local-build.md)
 
 ## MVP Scope
 
@@ -91,8 +92,9 @@ The current design assumes:
 
 The exact build instructions will be added as the native bridge and runtime are implemented.
 
-Phase 0 has landed the Go module scaffold and placeholder binaries. The local
-build and path-discovery convention now lives in [docs/01-local-build.md](docs/01-local-build.md).
+Phase 0 landed the Go module scaffold and placeholder binaries. Phase 1 adds
+the first native bridge verification path under the `llama` build tag. Local
+build and path-discovery conventions live in [docs/01-local-build.md](docs/01-local-build.md).
 
 ## Why This Repo Exists
 
@@ -119,15 +121,27 @@ Two conventions are already in place:
 
 ## Current Status
 
-Phase 0 is implemented:
+Phase 1 is implemented:
 
 - `go.mod` exists
 - `cmd/chat` and `cmd/server` compile as placeholders
-- `pkg/chat` owns the initial runtime flag surface
-- `internal/llama` reserves the native boundary and local path convention
+- `pkg/chat` owns the runtime flag surface and local JSON config loading
+- `internal/llama` can probe a native `libllama` bridge via `cgo`
 
 Current verification command:
 
 ```bash
 go build ./...
 ```
+
+Native bridge verification command:
+
+```bash
+CGO_CFLAGS="-I$LLAMA_INCLUDE_DIR" \
+CGO_LDFLAGS="-L$LLAMA_LIB_DIR -Wl,-rpath,$LLAMA_LIB_DIR -lllama" \
+go test -tags llama ./internal/llama
+```
+
+## Local Config
+
+Do not commit actual model paths. Copy [config/local.example.json](config/local.example.json) to `config/local.json` and keep the real model path there.

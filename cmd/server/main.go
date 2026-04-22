@@ -9,24 +9,39 @@ import (
 )
 
 type config struct {
+	configPath string
 	listenAddr string
 	runtime    chat.RuntimeConfig
 }
 
 func newConfig() config {
 	return config{
+		configPath: chat.DefaultConfigPath,
 		listenAddr: "127.0.0.1:8080",
 		runtime:    chat.DefaultRuntimeConfig(),
 	}
 }
 
 func (c *config) bindFlags(fs *flag.FlagSet) {
+	fs.StringVar(&c.configPath, "config", c.configPath, "Path to the local JSON config file.")
 	fs.StringVar(&c.listenAddr, "listen-addr", c.listenAddr, "Local HTTP listen address.")
 	c.runtime.BindFlags(fs)
 }
 
 func main() {
 	cfg := newConfig()
+	var explicitConfig bool
+	cfg.configPath, explicitConfig = chat.ResolveConfigPath(os.Args[1:], cfg.configPath)
+	var err error
+	if explicitConfig {
+		err = cfg.runtime.ApplyJSONFile(cfg.configPath)
+	} else {
+		err = cfg.runtime.ApplyOptionalJSONFile(cfg.configPath)
+	}
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "load server config: %v\n", err)
+		os.Exit(2)
+	}
 
 	fs := flag.NewFlagSet(os.Args[0], flag.ExitOnError)
 	cfg.bindFlags(fs)
@@ -38,7 +53,8 @@ func main() {
 	}
 
 	fmt.Fprintf(os.Stdout, "server placeholder: HTTP runtime lands in phase 6\n")
-	fmt.Fprintf(os.Stdout, "listen_addr=%q model=%q n_ctx=%d gpu_layers=%d max_tokens=%d\n",
+	fmt.Fprintf(os.Stdout, "config=%q listen_addr=%q model=%q n_ctx=%d gpu_layers=%d max_tokens=%d\n",
+		cfg.configPath,
 		cfg.listenAddr,
 		cfg.runtime.ModelPath,
 		cfg.runtime.ContextSize,

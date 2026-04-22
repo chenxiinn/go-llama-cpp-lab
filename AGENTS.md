@@ -16,16 +16,18 @@ Keep architecture changes aligned with `docs/00-master-plan.md`.
 
 ## Build, Test, and Development Commands
 
-Phase 0 has landed the Go module scaffold, so do not add ad hoc scripts. Standard commands are:
+Phase 1 uses a local JSON config file for machine-specific model paths, so do not add ad hoc scripts. Standard commands are:
 
 - `go build ./...` to compile all packages
 - `go test ./...` to run the full test suite
-- `go run ./cmd/chat --model /path/to/model.gguf` to start the CLI
-- `go run ./cmd/server --model /path/to/model.gguf` to start the local server
+- `go run ./cmd/chat --config ./config/local.json` to start the CLI
+- `go run ./cmd/server --config ./config/local.json` to start the local server
 
 If you introduce a new command, document it in both `README.md` and this file.
 
-Local llama.cpp path and build-linking conventions are documented in `docs/01-local-build.md`.
+Do not commit real model paths or model files. Keep them in untracked local config files such as `config/local.json`.
+
+Local `libllama` header/library conventions and native bridge verification commands are documented in `docs/01-local-build.md`.
 
 ## Coding Style & Naming Conventions
 
